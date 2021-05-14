@@ -16,10 +16,11 @@
  */
 package cn.chenjy.yums.oss.config;
 
-import cn.chenjy.yums.core.constant.CharConst;
-import cn.chenjy.yums.core.util.DateUtils;
-import cn.chenjy.yums.core.util.FileUtils;
-import cn.chenjy.yums.core.util.IdUtils;
+
+import cn.chenjy.yums.oss.constant.CharConst;
+import cn.chenjy.yums.oss.util.DateUtils;
+import cn.chenjy.yums.oss.util.FileUtils;
+import cn.chenjy.yums.oss.util.IdUtils;
 
 /**
  * 默认存储桶生成规则

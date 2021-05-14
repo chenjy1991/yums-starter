@@ -38,7 +38,7 @@ public class OssProp {
      */
     private String bucketName = "yums";
 
-    private Boolean cdnEnable;
+    private Boolean cdnEnable=false;
     private String cdnDomain;
 
     public Boolean getEnable() {

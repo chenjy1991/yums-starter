@@ -15,9 +15,6 @@ import java.util.List;
  * @DESCRIPTION
  */
 public interface OssTemplate {
-    String SLASH = "/";
-    String DOT = ".";
-    String EMPTY = "";
 
     /**
      * 创建 存储桶
@@ -57,7 +54,7 @@ public interface OssTemplate {
      * 上传文件
      *
      * @param file 上传文件类
-     * @return BladeFile
+     * @return YumsFile
      */
     YumsFile uploadFile(MultipartFile file);
 
@@ -66,7 +63,7 @@ public interface OssTemplate {
      *
      * @param file     上传文件类
      * @param fileName 上传文件名
-     * @return BladeFile
+     * @return YumsFile
      */
     YumsFile uploadFile(String fileName, MultipartFile file);
 
@@ -75,7 +72,7 @@ public interface OssTemplate {
      *
      * @param fileName 存储桶对象名称
      * @param stream   文件流
-     * @return BladeFile
+     * @return YumsFile
      */
     YumsFile uploadFile(String fileName, InputStream stream);
 

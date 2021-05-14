@@ -14,13 +14,13 @@ import org.springframework.context.annotation.Configuration;
  */
 @Configuration(proxyBeanMethods = false)
 @EnableConfigurationProperties(OssProp.class)
-public class OssConfig {
-    private static final Logger LOG = LoggerFactory.getLogger(OssConfig.class);
+public class YumsOssConfig {
+    private static final Logger LOG = LoggerFactory.getLogger(YumsOssConfig.class);
     private static final String TAG = "OssConfig";
 
     private final OssProp ossProp;
 
-    public OssConfig(OssProp ossProp) {
+    public YumsOssConfig(OssProp ossProp) {
         this.ossProp = ossProp;
     }
 

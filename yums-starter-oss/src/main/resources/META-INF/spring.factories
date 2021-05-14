@@ -1,0 +1,1 @@
+org.springframework.boot.autoconfigure.EnableAutoConfiguration=cn.chenjy.yums.oss.config.AliyunOssConfig,cn.chenjy.yums.oss.config.YumsOssConfig

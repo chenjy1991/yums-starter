@@ -23,7 +23,7 @@ import org.springframework.context.annotation.Configuration;
 @Configuration(proxyBeanMethods = false)
 @EnableConfigurationProperties(OssProp.class)
 @ConditionalOnClass({OSSClient.class})
-@ConditionalOnProperty(value = "yums.oss.name", havingValue = "alioss")
+@ConditionalOnProperty(value = "yums.oss.enable", havingValue = "true")
 public class AliyunOssConfig {
     private static final Logger LOG = LoggerFactory.getLogger(AliyunOssConfig.class);
     private static final String TAG = "AliyunOssConfig";
@@ -37,6 +37,7 @@ public class AliyunOssConfig {
 
     @Bean
     @ConditionalOnMissingBean(OSSClient.class)
+    @ConditionalOnProperty(value = "yums.oss.name", havingValue = "aliyun")
     public OSSClient ossClient() {
         // 创建ClientConfiguration。ClientConfiguration是OSSClient的配置类，可配置代理、连接超时、最大连接数等参数。
         ClientConfiguration conf = new ClientConfiguration();
@@ -59,7 +60,8 @@ public class AliyunOssConfig {
     @Bean
     @ConditionalOnBean({OSSClient.class})
     @ConditionalOnMissingBean(AliyunOssTemplate.class)
-    public AliyunOssTemplate aliossTemplate(OSSClient ossClient) {
+    @ConditionalOnProperty(value = "yums.oss.name", havingValue = "aliyun")
+    public AliyunOssTemplate aliyunOssTemplate(OSSClient ossClient) {
         return new AliyunOssTemplate(ossClient, ossProp,ossRule);
     }
 }

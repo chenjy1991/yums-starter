@@ -3,6 +3,7 @@ package cn.chenjy.yums.oss.templates;
 
 import cn.chenjy.yums.oss.config.OssProp;
 import cn.chenjy.yums.oss.config.OssRule;
+import cn.chenjy.yums.oss.constant.CharConst;
 import cn.chenjy.yums.oss.model.OssFile;
 import cn.chenjy.yums.oss.model.YumsFile;
 import com.aliyun.oss.OSSClient;
@@ -68,7 +69,7 @@ public class AliyunOssTemplate implements OssTemplate {
 
     @Override
     public String getFileLink(String fileName) {
-        return getOssHost().concat(SLASH).concat(fileName);
+        return getOssHost().concat(CharConst.SLASH).concat(fileName);
     }
 
     @Override
@@ -136,11 +137,10 @@ public class AliyunOssTemplate implements OssTemplate {
         if (ossProp.getCdnEnable()) {
             prefix = ossProp.getCdnDomain();
         }
-        return prefix + ossProp.getBucketName() + DOT + ossProp.getEndpoint().replaceFirst(prefix, EMPTY);
+        return prefix + ossProp.getBucketName() + CharConst.DOT + ossProp.getEndpoint().replaceFirst(prefix, CharConst.EMPTY);
     }
 
     private String getFileName(String originalFilename) {
-//        return ossRule.fileName(originalFilename);
-        return null;
+        return ossRule.fileName(originalFilename);
     }
 }
