@@ -12,11 +12,11 @@
         <relativePath />
     </parent>
 
-    <groupId>cn.chenjy.yums</groupId>
+    <groupId>cn.chenjy</groupId>
     <artifactId>yums-bom</artifactId>
     <packaging>pom</packaging>
-    <version>${yums.core.version}</version>
-    <description>bladex统一版本配置</description>
+    <version>0.0.1.RELEASE</version>
+    <description>YuMS统一版本配置</description>
 
     <properties>
         <yums.core.version>0.0.1.RELEASE</yums.core.version>
@@ -40,8 +40,14 @@
         <dependencies>
             <!-- YuMS -->
             <dependency>
-                <groupId>cn.chenjy.yums</groupId>
+                <groupId>cn.chenjy</groupId>
                 <artifactId>yums-core</artifactId>
+                <version>${yums.core.version}</version>
+                <scope>provided</scope>
+            </dependency>
+            <dependency>
+                <groupId>cn.chenjy</groupId>
+                <artifactId>yums-core-web</artifactId>
                 <version>${yums.core.version}</version>
                 <scope>provided</scope>
             </dependency>
@@ -245,7 +251,7 @@
             <dependency>
                 <groupId>com.aliyun.oss</groupId>
                 <artifactId>aliyun-sdk-oss</artifactId>
-                <version>3.11.3</version>
+                <version>3.12.0</version>
             </dependency>
             <!--MinIO-->
             <dependency>
@@ -263,7 +269,7 @@
             <dependency>
                 <groupId>com.qcloud</groupId>
                 <artifactId>cos_api</artifactId>
-                <version>5.6.36</version>
+                <version>5.6.38</version>
             </dependency>
             <!--AliSms-->
             <dependency>
@@ -291,13 +297,5 @@
             </dependency>
         </dependencies>
     </dependencyManagement>
-
-    <!-- <distributionManagement>
-        <repository>
-            <id>blade-release</id>
-            <name>Release Repository</name>
-            <url>http://nexus.bladex.vip/repository/maven-releases/</url>
-        </repository>
-    </distributionManagement> -->
 
 </project>

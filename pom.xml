@@ -4,7 +4,7 @@
     <modelVersion>4.0.0</modelVersion>
 
     <groupId>cn.chenjy</groupId>
-    <artifactId>YuMS</artifactId>
+    <artifactId>yums</artifactId>
     <version>0.0.1.RELEASE</version>
     <packaging>pom</packaging>
 
@@ -19,13 +19,15 @@
     <modules>
         <module>yums-bom</module>
         <module>yums-core</module>
+        <module>yums-core-web</module>
         <module>yums-starter-oss</module>
+        <module>yums-starter-sms</module>
     </modules>
 
     <dependencyManagement>
         <dependencies>
             <dependency>
-                <groupId>cn.chenjy.yums</groupId>
+                <groupId>cn.chenjy</groupId>
                 <artifactId>yums-bom</artifactId>
                 <version>${project.version}</version>
                 <type>pom</type>
