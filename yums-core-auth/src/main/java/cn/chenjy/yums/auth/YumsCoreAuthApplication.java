@@ -1,13 +1,13 @@
-package cn.chenjy.yums.web;
+package cn.chenjy.yums.auth;
 
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 
 @SpringBootApplication
-public class YumsCoreWebApplication {
+public class YumsCoreAuthApplication {
 
     public static void main(String[] args) {
-        SpringApplication.run(YumsCoreWebApplication.class, args);
+        SpringApplication.run(YumsCoreAuthApplication.class, args);
     }
 
 }

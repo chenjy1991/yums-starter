@@ -9,20 +9,23 @@
         <relativePath/> <!-- lookup parent from repository -->
     </parent>
     <groupId>cn.chenjy.yums</groupId>
-    <artifactId>yums-core-web</artifactId>
-    <version>${yums.web.version}</version>
+    <artifactId>yums-core-auth</artifactId>
+    <version>${yums.auth.version}</version>
     <name>${project.artifactId}</name>
-    <packaging>jar</packaging>
-
+    <description>Demo project for Spring Boot</description>
     <properties>
-        <yums.web.version>0.1.0-SNAPSHOT</yums.web.version>
+        <yums.auth.version>0.1.0-SNAPSHOT</yums.auth.version>
         <java.version>1.8</java.version>
     </properties>
-
     <dependencies>
         <dependency>
             <groupId>org.springframework.boot</groupId>
-            <artifactId>spring-boot-starter-web</artifactId>
+            <artifactId>spring-boot-starter</artifactId>
+        </dependency>
+        <dependency>
+            <groupId>cn.chenjy.yums</groupId>
+            <artifactId>yums-core-web</artifactId>
+            <version>0.1.0-SNAPSHOT</version>
         </dependency>
     </dependencies>
     <distributionManagement>
@@ -53,4 +56,5 @@
             </plugin>
         </plugins>
     </build>
+
 </project>
