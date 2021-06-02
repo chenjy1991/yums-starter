@@ -21,6 +21,7 @@
         <module>yums-core</module>
         <module>yums-core-auth</module>
         <module>yums-core-web</module>
+        <module>yums-starter-cache</module>
         <module>yums-starter-oss</module>
         <module>yums-starter-sms</module>
     </modules>
