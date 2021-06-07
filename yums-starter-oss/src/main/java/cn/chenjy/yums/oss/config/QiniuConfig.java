@@ -21,7 +21,7 @@ import org.springframework.context.annotation.Configuration;
  * @DESCRIPTION
  */
 @Configuration(proxyBeanMethods = false)
-@AutoConfigureAfter(YumsOssConfig.class)
+@AutoConfigureAfter(OssConfig.class)
 @EnableConfigurationProperties(OssProperties.class)
 @ConditionalOnExpression("${yums.oss.enable:true}&&'${yums.oss.name}'.equals('qiniu')")
 public class QiniuConfig {

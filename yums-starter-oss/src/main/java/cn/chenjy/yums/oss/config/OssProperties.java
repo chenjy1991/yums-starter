@@ -28,9 +28,15 @@ public class OssProperties {
      */
     private String endpoint;
     /**
-     * 华为云特有配置项，当终端节点不归属于华北-北京一（cn-north-1）时需要配置该属性
+     * 华为云:当终端节点不归属于华北-北京一（cn-north-1）时需要配置该属性
+     * 腾讯云:即腾讯云cos的region属性
      */
     private String location;
+
+    /**
+     * 腾讯云特有配置项，申请腾讯云账户后所得到的账号，由系统自动分配，具有固定性和唯一性，可在 账号信息 中查看。
+     */
+    private String tencentAppId;
     /**
      * Access key就像用户ID，可以唯一标识你的账户
      */
@@ -90,6 +96,14 @@ public class OssProperties {
 
     public void setLocation(String location) {
         this.location = location;
+    }
+
+    public String getTencentAppId() {
+        return tencentAppId;
+    }
+
+    public void setTencentAppId(String tencentAppId) {
+        this.tencentAppId = tencentAppId;
     }
 
     public String getAccessKey() {

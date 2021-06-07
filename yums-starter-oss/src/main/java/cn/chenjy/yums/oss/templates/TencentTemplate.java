@@ -1,13 +1,15 @@
 package cn.chenjy.yums.oss.templates;
 
-
 import cn.chenjy.yums.oss.config.OssProperties;
 import cn.chenjy.yums.oss.config.OssRule;
 import cn.chenjy.yums.oss.constant.CharConst;
 import cn.chenjy.yums.oss.model.OssFile;
 import cn.chenjy.yums.oss.model.YumsFile;
-import com.aliyun.oss.OSSClient;
-import com.aliyun.oss.model.*;
+import com.qcloud.cos.COSClient;
+import com.qcloud.cos.model.CannedAccessControlList;
+import com.qcloud.cos.model.CreateBucketRequest;
+import com.qcloud.cos.model.ObjectMetadata;
+import com.qcloud.cos.model.PutObjectResult;
 import org.springframework.util.StringUtils;
 import org.springframework.web.multipart.MultipartFile;
 
@@ -19,47 +21,49 @@ import java.util.List;
 
 /**
  * @author ChenJY
- * @create 2021/5/10 2:17 上午
+ * @create 2021/6/7 5:42 下午
  * @DESCRIPTION
  */
-public class AliyunTemplate implements OssTemplate {
-    private final OSSClient ossClient;
+public class TencentTemplate implements OssTemplate {
+    private final COSClient cosClient;
     private final OssProperties ossProperties;
     private final OssRule ossRule;
+    private final String bucketName;
 
-    public AliyunTemplate(OSSClient ossClient, OssProperties ossProperties, OssRule ossRule) {
-        this.ossClient = ossClient;
+    public TencentTemplate(COSClient cosClient, OssProperties ossProperties, OssRule ossRule) {
+        this.cosClient = cosClient;
         this.ossProperties = ossProperties;
         this.ossRule = ossRule;
+        this.bucketName = ossProperties.getBucketName().concat(CharConst.DASH).concat(ossProperties.getTencentAppId());
     }
 
     @Override
     public void makeBucket() {
         if (!bucketExists()) {
-            CreateBucketRequest createBucketRequest = new CreateBucketRequest(ossProperties.getBucketName());
-            createBucketRequest.setStorageClass(StorageClass.Standard);
+            CreateBucketRequest createBucketRequest = new CreateBucketRequest(bucketName);
+            // 设置 bucket 的权限为 Private(私有读写), 其他可选有公有读私有写, 公有读写
             if (ossProperties.getIsPublicRead()) {
-                createBucketRequest.setCannedACL(CannedAccessControlList.PublicRead);
+                createBucketRequest.setCannedAcl(CannedAccessControlList.PublicRead);
             }
-            ossClient.createBucket(createBucketRequest);
+            cosClient.createBucket(createBucketRequest);
         }
     }
 
     @Override
     public void removeBucket() {
         if (bucketExists()) {
-            ossClient.deleteBucket(ossProperties.getBucketName());
+            cosClient.deleteBucket(bucketName);
         }
     }
 
     @Override
     public boolean bucketExists() {
-        return ossClient.doesBucketExist(ossProperties.getBucketName());
+        return cosClient.doesBucketExist(bucketName);
     }
 
     @Override
     public OssFile getFileInfo(String fileName) {
-        ObjectMetadata info = ossClient.getObjectMetadata(ossProperties.getBucketName(), fileName);
+        ObjectMetadata info = cosClient.getObjectMetadata(bucketName, fileName);
         OssFile ossFile = new OssFile();
         ossFile.setName(fileName);
         ossFile.setLink(getFileLink(ossFile.getName()));
@@ -90,7 +94,6 @@ public class AliyunTemplate implements OssTemplate {
         }
     }
 
-
     @Override
     public YumsFile uploadFile(String fileName, InputStream stream) {
         return put(stream, fileName, false);
@@ -102,13 +105,13 @@ public class AliyunTemplate implements OssTemplate {
         key = getFileName(key);
         // 覆盖上传
         if (cover) {
-            ossClient.putObject(ossProperties.getBucketName(), key, stream);
+            cosClient.putObject(bucketName, key, stream, null);
         } else {
-            PutObjectResult response = ossClient.putObject(ossProperties.getBucketName(), key, stream);
+            PutObjectResult response = cosClient.putObject(bucketName, key, stream, null);
             int retry = 0;
             int retryCount = 5;
             while (StringUtils.isEmpty(response.getETag()) && retry < retryCount) {
-                response = ossClient.putObject(ossProperties.getBucketName(), key, stream);
+                response = cosClient.putObject(bucketName, key, stream, null);
                 retry++;
             }
         }
@@ -122,7 +125,7 @@ public class AliyunTemplate implements OssTemplate {
 
     @Override
     public void removeFile(String fileName) {
-        ossClient.deleteObject(ossProperties.getBucketName(), fileName);
+        cosClient.deleteObject(bucketName, fileName);
     }
 
     @Override
@@ -130,17 +133,8 @@ public class AliyunTemplate implements OssTemplate {
         fileNames.forEach(fileName -> removeFile(fileName));
     }
 
-    /**
-     * 获取域名
-     *
-     * @return String
-     */
     public String getOssHost() {
-        String prefix = ossProperties.getEndpoint().contains("https://") ? "https://" : "http://";
-        if (ossProperties.getCdnEnable()) {
-            prefix = ossProperties.getCdnDomain();
-        }
-        return prefix + ossProperties.getBucketName() + CharConst.DOT + ossProperties.getEndpoint().replaceFirst(prefix, CharConst.EMPTY);
+        return "http://" + cosClient.getClientConfig().getEndpointBuilder().buildGeneralApiEndpoint(bucketName);
     }
 
     private String getFileName(String originalFilename) {

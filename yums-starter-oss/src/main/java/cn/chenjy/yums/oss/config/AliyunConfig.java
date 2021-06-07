@@ -22,7 +22,7 @@ import org.springframework.context.annotation.Configuration;
  * @DESCRIPTION
  */
 @Configuration(proxyBeanMethods = false)
-@AutoConfigureAfter(YumsOssConfig.class)
+@AutoConfigureAfter(OssConfig.class)
 @EnableConfigurationProperties(OssProperties.class)
 @ConditionalOnClass({OSSClient.class})
 @ConditionalOnExpression("${yums.oss.enable:true}&&'${yums.oss.name}'.equals('aliyun')")
@@ -61,7 +61,7 @@ public class AliyunConfig {
     @Bean
     @ConditionalOnBean({OSSClient.class})
     @ConditionalOnMissingBean(AliyunTemplate.class)
-    public AliyunTemplate aliyunOssTemplate(OSSClient ossClient) {
+    public AliyunTemplate aliyunTemplate(OSSClient ossClient) {
         return new AliyunTemplate(ossClient, ossProperties, ossRule);
     }
 }
