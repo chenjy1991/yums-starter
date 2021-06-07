@@ -1,7 +1,7 @@
 package cn.chenjy.yums.oss.templates;
 
 
-import cn.chenjy.yums.oss.config.OssProp;
+import cn.chenjy.yums.oss.config.OssProperties;
 import cn.chenjy.yums.oss.config.OssRule;
 import cn.chenjy.yums.oss.constant.CharConst;
 import cn.chenjy.yums.oss.model.OssFile;
@@ -23,40 +23,40 @@ import java.util.List;
  * @create 2021/5/10 2:17 上午
  * @DESCRIPTION
  */
-public class AliyunOssTemplate implements OssTemplate {
+public class AliyunTemplate implements OssTemplate {
 
     private final OSSClient ossClient;
-    private final OssProp ossProp;
+    private final OssProperties ossProperties;
     private final OssRule ossRule;
 
-    public AliyunOssTemplate(OSSClient ossClient, OssProp ossProp, OssRule ossRule) {
+    public AliyunTemplate(OSSClient ossClient, OssProperties ossProperties, OssRule ossRule) {
         this.ossClient = ossClient;
-        this.ossProp = ossProp;
+        this.ossProperties = ossProperties;
         this.ossRule = ossRule;
     }
 
     @Override
     public void makeBucket() {
         if (!bucketExists()) {
-            ossClient.createBucket(ossProp.getBucketName());
+            ossClient.createBucket(ossProperties.getBucketName());
         }
     }
 
     @Override
     public void removeBucket() {
         if (bucketExists()) {
-            ossClient.deleteBucket(ossProp.getBucketName());
+            ossClient.deleteBucket(ossProperties.getBucketName());
         }
     }
 
     @Override
     public boolean bucketExists() {
-        return ossClient.doesBucketExist(ossProp.getBucketName());
+        return ossClient.doesBucketExist(ossProperties.getBucketName());
     }
 
     @Override
     public OssFile getFileInfo(String fileName) {
-        ObjectMetadata stat = ossClient.getObjectMetadata(ossProp.getBucketName(), fileName);
+        ObjectMetadata stat = ossClient.getObjectMetadata(ossProperties.getBucketName(), fileName);
         OssFile ossFile = new OssFile();
         ossFile.setName(fileName);
         ossFile.setLink(getFileLink(ossFile.getName()));
@@ -99,13 +99,13 @@ public class AliyunOssTemplate implements OssTemplate {
         key = getFileName(key);
         // 覆盖上传
         if (cover) {
-            ossClient.putObject(ossProp.getBucketName(), key, stream);
+            ossClient.putObject(ossProperties.getBucketName(), key, stream);
         } else {
-            PutObjectResult response = ossClient.putObject(ossProp.getBucketName(), key, stream);
+            PutObjectResult response = ossClient.putObject(ossProperties.getBucketName(), key, stream);
             int retry = 0;
             int retryCount = 5;
             while (StringUtils.isEmpty(response.getETag()) && retry < retryCount) {
-                response = ossClient.putObject(ossProp.getBucketName(), key, stream);
+                response = ossClient.putObject(ossProperties.getBucketName(), key, stream);
                 retry++;
             }
         }
@@ -119,7 +119,7 @@ public class AliyunOssTemplate implements OssTemplate {
 
     @Override
     public void removeFile(String fileName) {
-        ossClient.deleteObject(ossProp.getBucketName(), fileName);
+        ossClient.deleteObject(ossProperties.getBucketName(), fileName);
     }
 
     @Override
@@ -133,11 +133,11 @@ public class AliyunOssTemplate implements OssTemplate {
      * @return String
      */
     public String getOssHost() {
-        String prefix = ossProp.getEndpoint().contains("https://") ? "https://" : "http://";
-        if (ossProp.getCdnEnable()) {
-            prefix = ossProp.getCdnDomain();
+        String prefix = ossProperties.getEndpoint().contains("https://") ? "https://" : "http://";
+        if (ossProperties.getCdnEnable()) {
+            prefix = ossProperties.getCdnDomain();
         }
-        return prefix + ossProp.getBucketName() + CharConst.DOT + ossProp.getEndpoint().replaceFirst(prefix, CharConst.EMPTY);
+        return prefix + ossProperties.getBucketName() + CharConst.DOT + ossProperties.getEndpoint().replaceFirst(prefix, CharConst.EMPTY);
     }
 
     private String getFileName(String originalFilename) {

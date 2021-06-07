@@ -1,6 +1,6 @@
 package cn.chenjy.yums.oss.config;
 
-import cn.chenjy.yums.oss.templates.AliyunOssTemplate;
+import cn.chenjy.yums.oss.templates.AliyunTemplate;
 import com.aliyun.oss.ClientConfiguration;
 import com.aliyun.oss.OSSClient;
 import com.aliyun.oss.common.auth.CredentialsProvider;
@@ -21,17 +21,17 @@ import org.springframework.context.annotation.Configuration;
  * @DESCRIPTION
  */
 @Configuration(proxyBeanMethods = false)
-@EnableConfigurationProperties(OssProp.class)
+@EnableConfigurationProperties(OssProperties.class)
 @ConditionalOnClass({OSSClient.class})
 @ConditionalOnProperty(value = "yums.oss.enable", havingValue = "true")
-public class AliyunOssConfig {
-    private static final Logger LOG = LoggerFactory.getLogger(AliyunOssConfig.class);
+public class AliyunConfig {
+    private static final Logger LOG = LoggerFactory.getLogger(AliyunConfig.class);
     private static final String TAG = "AliyunOssConfig";
-    private OssProp ossProp;
+    private OssProperties ossProperties;
     private OssRule ossRule;
 
-    public AliyunOssConfig(OssProp ossProp, OssRule ossRule) {
-        this.ossProp = ossProp;
+    public AliyunConfig(OssProperties ossProperties, OssRule ossRule) {
+        this.ossProperties = ossProperties;
         this.ossRule = ossRule;
     }
 
@@ -53,15 +53,15 @@ public class AliyunOssConfig {
         conf.setIdleConnectionTime(60000);
         // 设置失败请求重试次数，默认为3次。
         conf.setMaxErrorRetry(5);
-        CredentialsProvider credentialsProvider = new DefaultCredentialProvider(ossProp.getAccessKey(), ossProp.getSecretKey());
-        return new OSSClient(ossProp.getEndpoint(), credentialsProvider, conf);
+        CredentialsProvider credentialsProvider = new DefaultCredentialProvider(ossProperties.getAccessKey(), ossProperties.getSecretKey());
+        return new OSSClient(ossProperties.getEndpoint(), credentialsProvider, conf);
     }
 
     @Bean
     @ConditionalOnBean({OSSClient.class})
-    @ConditionalOnMissingBean(AliyunOssTemplate.class)
+    @ConditionalOnMissingBean(AliyunTemplate.class)
     @ConditionalOnProperty(value = "yums.oss.name", havingValue = "aliyun")
-    public AliyunOssTemplate aliyunOssTemplate(OSSClient ossClient) {
-        return new AliyunOssTemplate(ossClient, ossProp,ossRule);
+    public AliyunTemplate aliyunOssTemplate(OSSClient ossClient) {
+        return new AliyunTemplate(ossClient, ossProperties,ossRule);
     }
 }

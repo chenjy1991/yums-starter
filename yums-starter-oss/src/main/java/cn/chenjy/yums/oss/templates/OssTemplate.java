@@ -33,7 +33,6 @@ public interface OssTemplate {
      */
     boolean bucketExists();
 
-
     /**
      * 获取文件信息
      *

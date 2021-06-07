@@ -8,7 +8,7 @@ import org.springframework.boot.context.properties.ConfigurationProperties;
  * @DESCRIPTION
  */
 @ConfigurationProperties(prefix = "yums.oss")
-public class OssProp {
+public class OssProperties {
     /**
      * 是否开启
      */
@@ -22,7 +22,8 @@ public class OssProp {
      */
     private Boolean tenantMode = false;
     /**
-     * 对象存储服务的URL
+     * aliyun:对象存储服务的URL
+     * qiniu:外链域名
      */
     private String endpoint;
     /**

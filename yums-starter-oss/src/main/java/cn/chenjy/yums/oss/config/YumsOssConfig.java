@@ -13,20 +13,20 @@ import org.springframework.context.annotation.Configuration;
  * @DESCRIPTION
  */
 @Configuration(proxyBeanMethods = false)
-@EnableConfigurationProperties(OssProp.class)
+@EnableConfigurationProperties(OssProperties.class)
 public class YumsOssConfig {
     private static final Logger LOG = LoggerFactory.getLogger(YumsOssConfig.class);
     private static final String TAG = "OssConfig";
 
-    private final OssProp ossProp;
+    private final OssProperties ossProperties;
 
-    public YumsOssConfig(OssProp ossProp) {
-        this.ossProp = ossProp;
+    public YumsOssConfig(OssProperties ossProperties) {
+        this.ossProperties = ossProperties;
     }
 
     @Bean
     @ConditionalOnMissingBean(OssRule.class)
     public OssRule ossRule() {
-        return new YumsOssRule(ossProp.getTenantMode());
+        return new YumsOssRule(ossProperties.getTenantMode());
     }
 }
