@@ -49,6 +49,7 @@
             <artifactId>aliyun-sdk-oss</artifactId>
             <version>${dependency.version.aliyun}</version>
             <scope>compile</scope>
+            <optional>true</optional>
         </dependency>
         <!-- 华为云 OBS -->
         <dependency>
@@ -56,6 +57,7 @@
             <artifactId>esdk-obs-java</artifactId>
             <version>${dependency.version.huawei}</version>
             <scope>compile</scope>
+            <optional>true</optional>
         </dependency>
         <!--腾讯云 COS-->
         <dependency>
@@ -63,6 +65,7 @@
             <artifactId>cos_api</artifactId>
             <version>${dependency.version.tencent}</version>
             <scope>compile</scope>
+            <optional>true</optional>
         </dependency>
         <!--七牛云 KODO-->
         <dependency>
@@ -70,6 +73,7 @@
             <artifactId>qiniu-java-sdk</artifactId>
             <version>${dependency.version.qiniu}</version>
             <scope>compile</scope>
+            <optional>true</optional>
         </dependency>
         <!--MinIO-->
         <dependency>
@@ -77,6 +81,7 @@
             <artifactId>minio</artifactId>
             <version>${dependency.version.minio}</version>
             <scope>compile</scope>
+            <optional>true</optional>
         </dependency>
     </dependencies>
     <distributionManagement>
