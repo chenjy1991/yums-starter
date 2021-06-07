@@ -23,9 +23,14 @@ public class OssProperties {
     private Boolean tenantMode = false;
     /**
      * aliyun:对象存储服务的URL
+     * huawei:对象存储服务的URL
      * qiniu:外链域名
      */
     private String endpoint;
+    /**
+     * 华为云特有配置项，当终端节点不归属于华北-北京一（cn-north-1）时需要配置该属性
+     */
+    private String location;
     /**
      * Access key就像用户ID，可以唯一标识你的账户
      */
@@ -39,7 +44,12 @@ public class OssProperties {
      */
     private String bucketName = "yums";
 
-    private Boolean cdnEnable=false;
+    /**
+     * 存储桶是否公共读，默认为是
+     */
+    private Boolean isPublicRead = true;
+
+    private Boolean cdnEnable = false;
     private String cdnDomain;
 
     public Boolean getEnable() {
@@ -74,6 +84,14 @@ public class OssProperties {
         this.endpoint = endpoint;
     }
 
+    public String getLocation() {
+        return location;
+    }
+
+    public void setLocation(String location) {
+        this.location = location;
+    }
+
     public String getAccessKey() {
         return accessKey;
     }
@@ -96,6 +114,14 @@ public class OssProperties {
 
     public void setBucketName(String bucketName) {
         this.bucketName = bucketName;
+    }
+
+    public Boolean getIsPublicRead() {
+        return isPublicRead;
+    }
+
+    public void setIsPublicRead(Boolean publicRead) {
+        isPublicRead = publicRead;
     }
 
     public Boolean getCdnEnable() {

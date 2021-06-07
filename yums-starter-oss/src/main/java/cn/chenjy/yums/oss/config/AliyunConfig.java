@@ -7,10 +7,11 @@ import com.aliyun.oss.common.auth.CredentialsProvider;
 import com.aliyun.oss.common.auth.DefaultCredentialProvider;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.boot.autoconfigure.AutoConfigureAfter;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnBean;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnClass;
+import org.springframework.boot.autoconfigure.condition.ConditionalOnExpression;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnMissingBean;
-import org.springframework.boot.autoconfigure.condition.ConditionalOnProperty;
 import org.springframework.boot.context.properties.EnableConfigurationProperties;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
@@ -21,9 +22,10 @@ import org.springframework.context.annotation.Configuration;
  * @DESCRIPTION
  */
 @Configuration(proxyBeanMethods = false)
+@AutoConfigureAfter(YumsOssConfig.class)
 @EnableConfigurationProperties(OssProperties.class)
 @ConditionalOnClass({OSSClient.class})
-@ConditionalOnProperty(value = "yums.oss.enable", havingValue = "true")
+@ConditionalOnExpression("${yums.oss.enable:true}&&'${yums.oss.name}'.equals('aliyun')")
 public class AliyunConfig {
     private static final Logger LOG = LoggerFactory.getLogger(AliyunConfig.class);
     private static final String TAG = "AliyunOssConfig";
@@ -37,7 +39,6 @@ public class AliyunConfig {
 
     @Bean
     @ConditionalOnMissingBean(OSSClient.class)
-    @ConditionalOnProperty(value = "yums.oss.name", havingValue = "aliyun")
     public OSSClient ossClient() {
         // 创建ClientConfiguration。ClientConfiguration是OSSClient的配置类，可配置代理、连接超时、最大连接数等参数。
         ClientConfiguration conf = new ClientConfiguration();
@@ -60,8 +61,7 @@ public class AliyunConfig {
     @Bean
     @ConditionalOnBean({OSSClient.class})
     @ConditionalOnMissingBean(AliyunTemplate.class)
-    @ConditionalOnProperty(value = "yums.oss.name", havingValue = "aliyun")
     public AliyunTemplate aliyunOssTemplate(OSSClient ossClient) {
-        return new AliyunTemplate(ossClient, ossProperties,ossRule);
+        return new AliyunTemplate(ossClient, ossProperties, ossRule);
     }
 }

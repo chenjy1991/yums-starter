@@ -1,3 +1,4 @@
 org.springframework.boot.autoconfigure.EnableAutoConfiguration=cn.chenjy.yums.oss.config.YumsOssConfig\
   ,cn.chenjy.yums.oss.config.AliyunConfig\
+  ,cn.chenjy.yums.oss.config.HuaweiConfig\
   ,cn.chenjy.yums.oss.config.QiniuConfig

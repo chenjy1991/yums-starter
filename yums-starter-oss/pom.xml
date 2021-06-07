@@ -18,6 +18,7 @@
         <yums.oss.version>0.1.2-SNAPSHOT</yums.oss.version>
         <java.version>1.8</java.version>
         <dependency.version.aliyun>3.12.0</dependency.version.aliyun>
+        <dependency.version.huawei>3.21.4</dependency.version.huawei>
         <dependency.version.tencent>5.6.38</dependency.version.tencent>
         <dependency.version.qiniu>7.7.0</dependency.version.qiniu>
         <dependency.version.minio>8.2.1</dependency.version.minio>
@@ -42,21 +43,28 @@
             <artifactId>spring-boot-starter-web</artifactId>
             <scope>provided</scope>
         </dependency>
-        <!--AliyunOss-->
+        <!--阿里云 OSS-->
         <dependency>
             <groupId>com.aliyun.oss</groupId>
             <artifactId>aliyun-sdk-oss</artifactId>
             <version>${dependency.version.aliyun}</version>
             <scope>compile</scope>
         </dependency>
-        <!--腾讯COS-->
+        <!-- 华为云 OBS -->
+        <dependency>
+            <groupId>com.huaweicloud</groupId>
+            <artifactId>esdk-obs-java</artifactId>
+            <version>${dependency.version.huawei}</version>
+            <scope>compile</scope>
+        </dependency>
+        <!--腾讯云 COS-->
         <dependency>
             <groupId>com.qcloud</groupId>
             <artifactId>cos_api</artifactId>
             <version>${dependency.version.tencent}</version>
             <scope>compile</scope>
         </dependency>
-        <!--QiNiu-->
+        <!--七牛云 KODO-->
         <dependency>
             <groupId>com.qiniu</groupId>
             <artifactId>qiniu-java-sdk</artifactId>

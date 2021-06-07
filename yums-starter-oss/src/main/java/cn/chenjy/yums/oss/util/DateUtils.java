@@ -10,10 +10,11 @@ import java.time.format.DateTimeFormatter;
  */
 public class DateUtils {
 
-    public static String today(){
+    public static String today() {
         return today("yyyyMMdd");
     }
-    public static String today(String pattern){
+
+    public static String today(String pattern) {
         return LocalDate.now().format(DateTimeFormatter.ofPattern(pattern));
     }
 }

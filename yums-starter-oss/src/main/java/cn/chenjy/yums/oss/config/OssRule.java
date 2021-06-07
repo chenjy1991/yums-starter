@@ -23,12 +23,12 @@ package cn.chenjy.yums.oss.config;
  */
 public interface OssRule {
 
-	/**
-	 * 获取文件名规则
-	 *
-	 * @param originalFilename 文件名
-	 * @return String
-	 */
-	String fileName(String originalFilename);
+    /**
+     * 获取文件名规则
+     *
+     * @param originalFilename 文件名
+     * @return String
+     */
+    String fileName(String originalFilename);
 
 }

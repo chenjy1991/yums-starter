@@ -1,13 +1,15 @@
 package cn.chenjy.yums.oss.templates;
 
-
 import cn.chenjy.yums.oss.config.OssProperties;
 import cn.chenjy.yums.oss.config.OssRule;
 import cn.chenjy.yums.oss.constant.CharConst;
 import cn.chenjy.yums.oss.model.OssFile;
 import cn.chenjy.yums.oss.model.YumsFile;
-import com.aliyun.oss.OSSClient;
-import com.aliyun.oss.model.*;
+import com.obs.services.ObsClient;
+import com.obs.services.model.AccessControlList;
+import com.obs.services.model.ObjectMetadata;
+import com.obs.services.model.ObsBucket;
+import com.obs.services.model.PutObjectResult;
 import org.springframework.util.StringUtils;
 import org.springframework.web.multipart.MultipartFile;
 
@@ -19,16 +21,16 @@ import java.util.List;
 
 /**
  * @author ChenJY
- * @create 2021/5/10 2:17 上午
+ * @create 2021/6/7 3:22 下午
  * @DESCRIPTION
  */
-public class AliyunTemplate implements OssTemplate {
-    private final OSSClient ossClient;
+public class HuaweiTemplate implements OssTemplate {
+    private final ObsClient obsClient;
     private final OssProperties ossProperties;
     private final OssRule ossRule;
 
-    public AliyunTemplate(OSSClient ossClient, OssProperties ossProperties, OssRule ossRule) {
-        this.ossClient = ossClient;
+    public HuaweiTemplate(ObsClient obsClient, OssProperties ossProperties, OssRule ossRule) {
+        this.obsClient = obsClient;
         this.ossProperties = ossProperties;
         this.ossRule = ossRule;
     }
@@ -36,34 +38,36 @@ public class AliyunTemplate implements OssTemplate {
     @Override
     public void makeBucket() {
         if (!bucketExists()) {
-            CreateBucketRequest createBucketRequest = new CreateBucketRequest(ossProperties.getBucketName());
-            createBucketRequest.setStorageClass(StorageClass.Standard);
+            ObsBucket obsBucket = new ObsBucket();
             if (ossProperties.getIsPublicRead()) {
-                createBucketRequest.setCannedACL(CannedAccessControlList.PublicRead);
+                obsBucket.setAcl(AccessControlList.REST_CANNED_PUBLIC_READ);
             }
-            ossClient.createBucket(createBucketRequest);
+            if (!StringUtils.isEmpty(ossProperties.getLocation())) {
+                obsBucket.setLocation(ossProperties.getLocation());
+            }
+            obsClient.createBucket(obsBucket);
         }
     }
 
     @Override
     public void removeBucket() {
         if (bucketExists()) {
-            ossClient.deleteBucket(ossProperties.getBucketName());
+            obsClient.deleteBucket(ossProperties.getBucketName());
         }
     }
 
     @Override
     public boolean bucketExists() {
-        return ossClient.doesBucketExist(ossProperties.getBucketName());
+        return obsClient.headBucket(ossProperties.getBucketName());
     }
 
     @Override
     public OssFile getFileInfo(String fileName) {
-        ObjectMetadata info = ossClient.getObjectMetadata(ossProperties.getBucketName(), fileName);
+        ObjectMetadata info = obsClient.getObjectMetadata(ossProperties.getBucketName(), fileName);
         OssFile ossFile = new OssFile();
         ossFile.setName(fileName);
         ossFile.setLink(getFileLink(ossFile.getName()));
-        ossFile.setHash(info.getContentMD5());
+        ossFile.setHash(info.getContentMd5());
         ossFile.setLength(info.getContentLength());
         ossFile.setUploadTime(LocalDateTime.ofInstant(info.getLastModified().toInstant(), ZoneId.systemDefault()));
         ossFile.setContentType(info.getContentType());
@@ -90,7 +94,6 @@ public class AliyunTemplate implements OssTemplate {
         return null;
     }
 
-
     @Override
     public YumsFile uploadFile(String fileName, InputStream stream) {
         return put(stream, fileName, false);
@@ -102,13 +105,13 @@ public class AliyunTemplate implements OssTemplate {
         key = getFileName(key);
         // 覆盖上传
         if (cover) {
-            ossClient.putObject(ossProperties.getBucketName(), key, stream);
+            obsClient.putObject(ossProperties.getBucketName(), key, stream);
         } else {
-            PutObjectResult response = ossClient.putObject(ossProperties.getBucketName(), key, stream);
+            PutObjectResult response = obsClient.putObject(ossProperties.getBucketName(), key, stream);
             int retry = 0;
             int retryCount = 5;
-            while (StringUtils.isEmpty(response.getETag()) && retry < retryCount) {
-                response = ossClient.putObject(ossProperties.getBucketName(), key, stream);
+            while (StringUtils.isEmpty(response.getEtag()) && retry < retryCount) {
+                response = obsClient.putObject(ossProperties.getBucketName(), key, stream);
                 retry++;
             }
         }
@@ -122,7 +125,7 @@ public class AliyunTemplate implements OssTemplate {
 
     @Override
     public void removeFile(String fileName) {
-        ossClient.deleteObject(ossProperties.getBucketName(), fileName);
+        obsClient.deleteObject(ossProperties.getBucketName(), fileName);
     }
 
     @Override
