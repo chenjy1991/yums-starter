@@ -18,18 +18,12 @@
 
     <modules>
         <module>yums-starter-oss</module>
+        <module>yums-starter-social</module>
         <module>yums-starter-sms</module>
     </modules>
 
     <dependencyManagement>
         <dependencies>
-            <dependency>
-                <groupId>cn.chenjy</groupId>
-                <artifactId>yums-bom</artifactId>
-                <version>${project.version}</version>
-                <type>pom</type>
-                <scope>import</scope>
-            </dependency>
             <dependency>
                 <groupId>org.springframework.boot</groupId>
                 <artifactId>spring-boot-dependencies</artifactId>

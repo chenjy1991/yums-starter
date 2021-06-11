@@ -10,16 +10,22 @@ import org.springframework.boot.context.properties.ConfigurationProperties;
  * @DESCRIPTION
  */
 @ConfigurationProperties(prefix = "yums.sms")
-public class SmsProp {
+public class SmsProperties {
     /**
      * 是否开启
      */
     private Boolean enable;
     /**
-     * 短信服务名称(aliyun)
+     * 短信服务名称(aliyun、mas)
      */
     private String name;
+    /**
+     * ccess key就像用户ID，可以唯一标识你的账户
+     */
     private String accessKey;
+    /**
+     * Secret key是你账户的密码
+     */
     private String secretKey;
 
     public Boolean getEnable() {

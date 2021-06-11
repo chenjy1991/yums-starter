@@ -19,17 +19,17 @@ import org.springframework.context.annotation.Configuration;
  * @DESCRIPTION
  */
 @Configuration(proxyBeanMethods = false)
-@EnableConfigurationProperties(SmsProp.class)
+@EnableConfigurationProperties(SmsProperties.class)
 @ConditionalOnClass({Client.class})
 @ConditionalOnProperty(value = "yums.sms.enable", havingValue = "true")
 public class AliyunSmsConfig {
     private static final Logger LOG = LoggerFactory.getLogger(AliyunSmsConfig.class);
     private static final String TAG = "SmsConfig";
 
-    private final SmsProp smsProp;
+    private final SmsProperties smsProperties;
 
-    public AliyunSmsConfig(SmsProp smsProp){
-        this.smsProp=smsProp;
+    public AliyunSmsConfig(SmsProperties smsProperties){
+        this.smsProperties = smsProperties;
     }
 
     @Bean
@@ -38,9 +38,9 @@ public class AliyunSmsConfig {
     public Client smsClient()throws Exception{
         Config config = new Config()
                 // 您的AccessKey ID
-                .setAccessKeyId(smsProp.getAccessKey())
+                .setAccessKeyId(smsProperties.getAccessKey())
                 // 您的AccessKey Secret
-                .setAccessKeySecret(smsProp.getSecretKey());
+                .setAccessKeySecret(smsProperties.getSecretKey());
         // 访问的域名
         config.endpoint = "dysmsapi.aliyuncs.com";
         return new Client(config);
