@@ -40,7 +40,7 @@
     </developers>
 
     <properties>
-        <yums.oss.version>1.0.1-SNAPSHOT</yums.oss.version>
+        <yums.oss.version>1.0.1</yums.oss.version>
         <java.version>1.8</java.version>
         <dependency.version.aliyun>3.12.0</dependency.version.aliyun>
         <dependency.version.huawei>3.21.4</dependency.version.huawei>

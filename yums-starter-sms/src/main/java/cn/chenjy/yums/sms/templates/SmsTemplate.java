@@ -11,5 +11,5 @@ public interface SmsTemplate {
 
     Boolean sendSms(String mobile, String signName, String templateCode, String templateParam);
 
-    Boolean sendSms(String mobile, String signName, String templateCode, Map<String,String> templateParam);
+    Boolean sendSms(String mobile, String signName, String templateCode, Map<String, String> templateParam);
 }

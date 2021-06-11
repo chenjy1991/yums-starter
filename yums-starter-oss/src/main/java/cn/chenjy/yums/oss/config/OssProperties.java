@@ -55,7 +55,14 @@ public class OssProperties {
      */
     private Boolean isPublicRead = true;
 
+    /**
+     * 是否开启CDN支持
+     */
     private Boolean cdnEnable = false;
+
+    /**
+     * CDN域名 例如:'https://yums.chenjy.cn'，注意结尾不带
+     */
     private String cdnDomain;
 
     public Boolean getEnable() {

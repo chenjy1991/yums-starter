@@ -3,8 +3,10 @@ package cn.chenjy.yums.oss.templates;
 import cn.chenjy.yums.oss.config.OssProperties;
 import cn.chenjy.yums.oss.config.OssRule;
 import cn.chenjy.yums.oss.constant.CharConst;
+import cn.chenjy.yums.oss.constant.StringConst;
 import cn.chenjy.yums.oss.model.OssFile;
 import cn.chenjy.yums.oss.model.YumsFile;
+import cn.chenjy.yums.oss.util.FileUtils;
 import com.qcloud.cos.COSClient;
 import com.qcloud.cos.model.CannedAccessControlList;
 import com.qcloud.cos.model.CreateBucketRequest;
@@ -134,7 +136,11 @@ public class TencentTemplate implements OssTemplate {
     }
 
     public String getOssHost() {
-        return "http://" + cosClient.getClientConfig().getEndpointBuilder().buildGeneralApiEndpoint(bucketName);
+        if (ossProperties.getCdnEnable() && !StringUtils.isEmpty(ossProperties.getCdnDomain())) {
+            return FileUtils.getCdnHost(ossProperties.getCdnDomain());
+        } else {
+            return StringConst.UN_SSL_PREFIX + cosClient.getClientConfig().getEndpointBuilder().buildGeneralApiEndpoint(bucketName);
+        }
     }
 
     private String getFileName(String originalFilename) {

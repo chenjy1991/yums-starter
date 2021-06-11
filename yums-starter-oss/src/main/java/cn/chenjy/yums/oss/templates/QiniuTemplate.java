@@ -3,8 +3,10 @@ package cn.chenjy.yums.oss.templates;
 import cn.chenjy.yums.oss.config.OssProperties;
 import cn.chenjy.yums.oss.config.OssRule;
 import cn.chenjy.yums.oss.constant.CharConst;
+import cn.chenjy.yums.oss.constant.StringConst;
 import cn.chenjy.yums.oss.model.OssFile;
 import cn.chenjy.yums.oss.model.YumsFile;
+import cn.chenjy.yums.oss.util.FileUtils;
 import com.qiniu.common.QiniuException;
 import com.qiniu.common.Zone;
 import com.qiniu.http.Response;
@@ -202,11 +204,14 @@ public class QiniuTemplate implements OssTemplate {
      * @return String
      */
     public String getOssHost() {
-        String prefix = ossProperties.getEndpoint().contains("https://") ? "https://" : "http://";
-        if (ossProperties.getCdnEnable()) {
-            prefix = ossProperties.getCdnDomain();
+        if (ossProperties.getCdnEnable() && !StringUtils.isEmpty(ossProperties.getCdnDomain())) {
+            return FileUtils.getCdnHost(ossProperties.getCdnDomain());
+        } else {
+            StringBuilder host = new StringBuilder();
+            host.append(ossProperties.getEndpoint().contains(StringConst.SSL_PREFIX) ? StringConst.SSL_PREFIX : StringConst.UN_SSL_PREFIX);
+            host.append(ossProperties.getEndpoint().replaceFirst(host.toString(), CharConst.EMPTY));
+            return host.toString();
         }
-        return prefix + ossProperties.getEndpoint().replaceFirst(prefix, CharConst.EMPTY);
     }
 
     private String getFileName(String originalFilename) {

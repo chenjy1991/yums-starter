@@ -1,22 +1,26 @@
 # OSS 对象存储工具包
 
 ## 介绍
+
 该工具包用于各个云厂商的对象存储服务的使用，整合了各个厂商的SDK，解决不同SDK带来的代码无法复用的问题。  
 通过该工具包，可以使一套代码在各个项目中复用，当更换对象存储服务时，只需要修改maven依赖及对应配置。  
 目前已支持：阿里云(aliyun)、华为云(huawei)、腾讯云(tencent)、七牛云(qiniu)
 
 ## 使用方式
 
-1. 首先导入工具包的核心依赖
+1. 首先导入工具包的核心依赖  
+- 最新版本为`1.0.1`
+
 ```
 <dependency>
     <groupId>cn.chenjy.yums</groupId>
     <artifactId>yums-starter-oss</artifactId>
-    <version>1.0.0</version>
+    <version>1.0.1</version>
 </dependency>
 ```
-2. 导入需要使用云厂商SDK
-例如阿里云：
+
+2. 导入需要使用云厂商SDK 例如阿里云：
+
 ```
 <dependency>
     <groupId>com.aliyun.oss</groupId>
@@ -24,8 +28,9 @@
     <version>${dependency.version.aliyun}</version>
 </dependency>
 ```
-3. `properties`或`yaml`配置文件中配置对应属性
-示例：
+
+3. `properties`或`yaml`配置文件中配置对应属性 示例：
+
 ```
 yums.oss.enable=true
 yums.oss.name=aliyun
@@ -34,8 +39,9 @@ yums.oss.access-key=access-key
 yums.oss.secret-key=secret-key
 yums.oss.endpoint=oss-cn-hangzhou.aliyuncs.com
 ```
-4.代码中使用
-只需要注入`OssTemplate`即可使用
+
+4.代码中使用 只需要注入`OssTemplate`即可使用
+
 ```
 @Autowired
 OssTemplate ossTemplate;
@@ -74,7 +80,9 @@ OssTemplate ossTemplate;
 |yums.oss.cdn-domain|CDN域名|
 
 ## 建议的云厂商SDK版本
+
 阿里云(aliyun)
+
 ```
 <dependency>
     <groupId>com.aliyun.oss</groupId>
@@ -82,7 +90,9 @@ OssTemplate ossTemplate;
     <version>3.12.0</version>
 </dependency>
 ```
+
 华为云(huawei)
+
 ```
 <dependency>
     <groupId>com.huaweicloud</groupId>
@@ -90,7 +100,9 @@ OssTemplate ossTemplate;
     <version>3.21.4</version>
 </dependency>
 ```
+
 腾讯云(tencent)
+
 ```
 <dependency>
     <groupId>com.qcloud</groupId>
@@ -98,7 +110,9 @@ OssTemplate ossTemplate;
     <version>5.6.38</version>
 </dependency>
 ```
+
 七牛云(qiniu)
+
 ```
 <dependency>
     <groupId>com.qiniu</groupId>

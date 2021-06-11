@@ -28,14 +28,14 @@ public class AliyunSmsConfig {
 
     private final SmsProperties smsProperties;
 
-    public AliyunSmsConfig(SmsProperties smsProperties){
+    public AliyunSmsConfig(SmsProperties smsProperties) {
         this.smsProperties = smsProperties;
     }
 
     @Bean
     @ConditionalOnMissingBean(Client.class)
     @ConditionalOnProperty(value = "yums.sms.name", havingValue = "aliyun")
-    public Client smsClient()throws Exception{
+    public Client smsClient() throws Exception {
         Config config = new Config()
                 // 您的AccessKey ID
                 .setAccessKeyId(smsProperties.getAccessKey())
@@ -50,7 +50,7 @@ public class AliyunSmsConfig {
     @ConditionalOnBean({Client.class})
     @ConditionalOnMissingBean(AliyunSmsTemplate.class)
     @ConditionalOnProperty(value = "yums.sms.name", havingValue = "aliyun")
-    public AliyunSmsTemplate aliyunSmsTemplate(Client smsClient){
+    public AliyunSmsTemplate aliyunSmsTemplate(Client smsClient) {
         return new AliyunSmsTemplate(smsClient);
     }
 
