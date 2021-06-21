@@ -20,6 +20,7 @@
         <module>yums-starter-oss</module>
         <module>yums-starter-social</module>
         <module>yums-starter-sms</module>
+        <module>yums-starter-http</module>
     </modules>
 
     <dependencyManagement>
